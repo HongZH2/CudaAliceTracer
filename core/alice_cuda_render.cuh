@@ -18,7 +18,7 @@ namespace ALICE_TRACER{
     __device__ glm::vec3 skybox(const Ray & r) {
         glm::vec3 dir = glm::normalize(r.dir_);
         float t = 0.5f*(dir.y + 1.0f);
-        return (1.0f - t) * glm::vec3(1.0f) + t * glm::vec3(0.5f, 0.7f, 1.0f);
+        return (1.0f - t) * glm::vec3(1.0f) + t * glm::vec3(0.3f, 0.6f, 1.0f);
     }
 
     // ----------------------------
