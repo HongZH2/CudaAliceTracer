@@ -13,3 +13,7 @@ So it is time to move the project to a GPU-based version.
 2022/12/13
 -- first image
 ![](showcases/test.png)
+
+
+## Resources
+1. https://developer.nvidia.com/blog/accelerated-ray-tracing-cuda/
