@@ -81,7 +81,18 @@ namespace ALICE_TRACER{
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, d_img->w(), d_img->h(), 0, GL_RGB, GL_FLOAT, d_img->getDataPtr()); // load from cpu to gpu, TODO
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, d_img->w(), d_img->h(), 0, GL_RGB, GL_FLOAT, d_img->getDataBuffer()); // load from cpu to gpu, TODO
+//        checkCudaErrors(cudaGraphicsGLRegisterImage(&cuda_tid_, tid_, GL_TEXTURE_2D, cudaGraphicsMapFlagsWriteDiscard));
+//        // map buffer objects to get CUDA device pointers
+//        cudaArray *texture_ptr;
+//        checkCudaErrors(cudaGraphicsMapResources(1, &cuda_tid_, 0));
+//        checkCudaErrors(cudaGraphicsSubResourceGetMappedArray(&texture_ptr, cuda_tid_, 0, 0));
+//
+//        int num_values = d_img->num_pixels();
+//        int size_tex_data = sizeof(GLfloat) * num_values;
+//        checkCudaErrors(cudaMemcpyToArray(texture_ptr, 0, 0, d_img->getDataBuffer(), size_tex_data, cudaMemcpyDeviceToDevice));
+//
+//        checkCudaErrors(cudaGraphicsUnmapResources(1, &cuda_tid_, 0));
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
@@ -106,7 +117,17 @@ namespace ALICE_TRACER{
 
     void Texture::update(ALICE_TRACER::Image *d_img) {
         glBindTexture(GL_TEXTURE_2D, tid_);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_img->w(), d_img->h(), GL_RGB, GL_FLOAT, d_img->getDataPtr());
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_img->w(), d_img->h(), GL_RGB, GL_FLOAT, d_img->getDataBuffer());
+//        // map buffer objects to get CUDA device pointers
+//        cudaArray *texture_ptr;
+//        checkCudaErrors(cudaGraphicsMapResources(1, &cuda_tid_, 0));
+//        checkCudaErrors(cudaGraphicsSubResourceGetMappedArray(&texture_ptr, cuda_tid_, 0, 0));
+//
+//        int num_values = d_img->num_pixels();
+//        int size_tex_data = sizeof(GLfloat) * num_values;
+//        checkCudaErrors(cudaMemcpyToArray(texture_ptr, 0, 0, d_img->getDataBuffer(), size_tex_data, cudaMemcpyDeviceToDevice));
+//
+//        checkCudaErrors(cudaGraphicsUnmapResources(1, &cuda_tid_, 0));
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 

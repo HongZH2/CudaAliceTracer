@@ -18,6 +18,7 @@ namespace ALICE_TRACER{
         void update(Image * d_img);
         void drawTexture();
     protected:
+//        struct cudaGraphicsResource * cuda_tid_;
         uint tid_;
         uint vbo_;
         uint vao_;

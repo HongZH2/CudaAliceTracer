@@ -21,7 +21,7 @@ namespace ALICE_TRACER {
         inline int w(){return width_;}
         inline int h(){return height_;}
         inline int c(){return channel_;}
-        inline float * getDataPtr(){return buffer_;}
+        inline int num_pixels(){return num_pixels_;}
     protected:
         int width_;
         int height_;
