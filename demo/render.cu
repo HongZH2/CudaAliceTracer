@@ -5,11 +5,13 @@
  */
 
 
-#include "utils/alice_cuda_checker.cuh"
-#include "utils/alice_cuda_image.cuh"
-#include "core/alice_cuda_render.cuh"
-#include "core/alice_cuda_camera.cuh"
+#include "utils/include/alice_cuda_image.h"
+#include "core/include/alice_cuda_render.h"
+#include "core/include/alice_cuda_camera.h"
 
+#include "interface/include/window.h"
+#include "interface/include/imgui_widgets.h"
+#include "interface/include/texture_cuda_gl.h"
 
 int main() {
     // create an empty image
@@ -18,7 +20,14 @@ int main() {
     int img_c = 3;
     glm::vec2 resolution{img_w, img_h};
 
+    // 1. create Window
+    ALICE_TRACER::Window window{};
+    window.initWindow(img_w, img_h);
+    ALICE_TRACER::ImGUIWidget widgets;
+    widgets.initImGui();
+
     auto * res_img = new ALICE_TRACER::Image(img_w, img_h, img_c);
+    ALICE_TRACER::Texture texture{res_img};
 
     // start the timer
     clock_t start, stop;
@@ -47,7 +56,18 @@ int main() {
     double timer_seconds = ((double)(stop - start)) / CLOCKS_PER_SEC;
     std::cerr << "the current frame took " << timer_seconds << " seconds.\n";
 
-    res_img->saveImage("./test.png");
+    // render to the screen
+    while(window.updateWindow()){
+        // render to the screen
+        texture.update(res_img);
+        texture.drawTexture();
+        widgets.updateImGui();
+        window.swapBuffer();
+    }
+    widgets.destroyImGui();
+    window.releaseWindow();
+
+    res_img->saveImage("../showcases/test.png");
     delete res_img;
     return 0;
 }
